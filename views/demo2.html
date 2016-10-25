@@ -1,0 +1,254 @@
+<!DOCTYPE html> 
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <meta charset="utf-8" />
+        <title>lk</title>
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="stylesheet" type="text/css" href="../css/common.min.css" />
+        <link rel="stylesheet" type="text/css" href="../css/form.css" />
+        <link rel="stylesheet" type="text/css" href="../css/md.css" />
+        <script type="text/javascript" src="../js/lib/zepto.min.js"></script>
+    </head>
+    <style>
+        .jingle-calendar table td.disabled{
+            background-color: #E6E6E6;
+        }
+    </style>
+    <body>
+        <div id="section_container">
+            <section id="main_section" class="active" data-init="true">
+                <header class="bg-green">
+                    <h1 class="title">购买</h1>
+                </header>
+                <article id="bookingDetail_article" class="active" data-scroll="true">
+                    <div>
+                        <div class="bg-fff">
+                            <div class="pad10">
+                                <div>
+                                    苹果7
+                                </div>
+                                <div>
+                                    正品64G亮金
+                                </div>
+                            </div>
+                            <div class="grid pl10 pr10 pb10">
+                                <div class="col-1 w50 color-yellow">
+                                    <div>移动4G</div>
+                                    <div>双卡双待</div>
+                                </div>
+                                <div class="col-0 hospital-img">
+                                    <img src="" />
+                                </div>
+                                <div class="col-1 w50 pt5 text-right">
+                                    <span class="doctor-icon">自营</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <div class="hospital-img text-center pad10">
+                                                    <img src="" />
+                                                </div>-->
+                        <div>
+                            <form>
+                                <ul class="list">
+                                    <li class="grid">
+                                        <div class="col-0 pt10 pb10 w70p label-info">
+                                            发货日期:
+                                        </div>
+                                        <div class="col-1 pad10 select-date">
+
+                                        </div>
+                                    </li>
+                                    <li class="grid">
+                                        <div class="col-0 pt10 w70p label-info">
+                                            送货时间:
+                                        </div>
+                                        <div class="col-1">
+                                            <select id="time-select">
+
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li class="grid">
+                                        <div class="col-0 pt10 w70p label-info">
+                                            收货人:
+                                        </div>
+                                        <div class="col-1">
+                                            <input type="text" placeholder="请输入收货人姓名">
+                                        </div>
+                                    </li>
+                                    <li class="grid">
+                                        <div class="col-0 pt10 w70p label-info">
+                                            收货地址:
+                                        </div>
+                                        <div class="col-1">
+                                            <input type="text" placeholder="请输入收货地址">
+                                        </div>
+                                    </li>
+                                    <li class="grid">
+                                        <div class="col-0 pt10 w70p label-info">
+                                            联系方式:
+                                        </div>
+                                        <div class="col-1">
+                                            <input id="user-mobile" type="tel" placeholder="请输入联系方式">
+                                        </div>
+                                        <div class="col-0 vertical-center">
+                                            <button class="smsCode-btn">验证码</button>
+                                        </div>
+                                    </li>
+                                    <li class="grid">
+                                        <div class="col-0 pt10 w70p label-info">
+                                            验证码:
+                                        </div>
+                                        <div class="col-1">
+                                            <input type="tel" placeholder="请输入验证码">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </form>
+                            <div class="pad20">
+                                <a href="demo3.html" class="btn btn-block booking-btn">确认支付8000.00元</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </div>
+        <script type="text/javascript" src="../js/lib/iscroll.js"></script>
+        <script type="text/javascript" src="../js/lib/template.min.js"></script>
+        <script type="text/javascript" src="../js/lib/zepto.touch2mouse.js"></script>
+        <script type="text/javascript" src="../js/lib/Jingle.custom.js"></script>
+        <script type="text/javascript" src="../js/lib/app.js"></script>
+        <script>
+            Zepto(function ($) {
+                var storage_data = '';
+                $('.select-date').tap(function () {
+                    J.popup({
+                        html: '<div id="popup_calendar"></div>',
+                        pos: 'center',
+                        backgroundOpacity: 0.4,
+                        showCloseBtn: false,
+                        onShow: function () {
+                            new J.Calendar('#popup_calendar', {
+                                date: new Date(),
+                                months: ["01月", "02月", "03月", "04月", "05月", "06月",
+                                    "07月", "08月", "09月", "10月", "11月", "12月"],
+                                days: ["日", "一", "二", "三", "四", "五", "六"],
+                                onSelect: function (date) {
+                                    $(".select-date").text(date);
+                                    J.closePopup();
+//                                    readyBookingTime(date);
+                                }
+                            });
+                        }
+                    });
+                });
+                function readyBookingTime(date) {
+                    var time_select = '';
+                    var is_time = false;
+                    var doctorDutys = storage_data.results.doctors[0].doctorDutys;
+                    if (doctorDutys && doctorDutys.length > 0) {
+                        for (var i = 0; i < doctorDutys.length; i++) {
+                            if (date == doctorDutys[i].dutyDate) {
+                                var timeList = doctorDutys[i].timeList;
+                                var selectedList = doctorDutys[i].selectedList;
+                                if (timeList.length > 0) {
+                                    is_time == true;
+                                    for (var j = 0; j < timeList.length; j++) {
+                                        if (selectedList.length > 0) {
+                                            for (var k; k < selectedList.length; k++) {
+                                                if (timeList[j] == selectedList[k]) {
+                                                    time_select += '<option value="' + timeList[j] + '" disabled="true">' + timeList[j] + '</option>';
+                                                } else {
+                                                    time_select += '<option value="' + timeList[j] + '">' + timeList[j] + '</option>';
+                                                }
+                                            }
+                                        } else {
+                                            time_select += '<option value="' + timeList[j] + '">' + timeList[j] + '</option>';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        time_select += '<option>今天休息</option>';
+                    }
+                    if (!is_time) {
+                        time_select += '<option>今天休息</option>';
+                    }
+                    $('#time-select').html(time_select);
+                }
+//                $.ajax({
+//                    url: 'http://192.168.31.139/meb/mebapi/clinicservicedoctor?username=15221216910&token=6E512003B228C1326617C4A8917839A1&clinic_id=2&service_id=3',
+//                    success: function (data) {
+//                        storage_data = data;
+//                        console.log(storage_data);
+//                    },
+//                    error: function (XmlHttpRequest, textStatus, errorThrown) {
+//                        console.log(XmlHttpRequest);
+//                        console.log(textStatus);
+//                        console.log(errorThrown);
+//                    }
+//                });
+                $('.smsCode-btn').click(function (e) {
+                    e.preventDefault();
+                    var mobile = $('#user-mobile').val();
+                    if (mobile.length == 0) {
+                        alert('请输入手机号码');
+                    } else if (!validatorMobile(mobile)) {
+                        alert('请输入正确的手机号码');
+                    } else {
+                        sendSmsVerifyCode(mobile);
+                    }
+                });
+                function sendSmsVerifyCode(mobile) {
+                    $.ajax({
+                        type: 'post',
+                        url: 'http://192.168.31.139/meb/mebapi/smsverifycode',
+                        data: {"mobile": mobile, "action_type": "100"},
+                        success: function (data) {
+                            if (data.status == 'ok') {
+                                buttonTimerStart($('.smsCode-btn'), 60000);
+                            }
+                        },
+                        error: function (XmlHttpRequest, textStatus, errorThrown) {
+                            console.log(XmlHttpRequest);
+                            console.log(textStatus);
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+
+                function buttonTimerStart(domBtn, timer) {
+                    timer = timer / 1000 //convert to second.
+                    var interval = 1000;
+                    var timerTitle = '秒后重发';
+                    domBtn.attr("disabled", true);
+                    domBtn.html(timer + timerTitle);
+                    timerId = setInterval(function () {
+                        timer--;
+                        if (timer > 0) {
+                            domBtn.html(timer + timerTitle);
+                        } else {
+                            clearInterval(timerId);
+                            timerId = null;
+                            domBtn.html("重新发送");
+                            domBtn.attr("disabled", false).removeAttr("disabled");
+                            ;
+                        }
+                    }, interval);
+                }
+                function validatorMobile(mobile) {
+                    var mobileReg = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+                    return mobileReg.test(mobile);
+                }
+            });
+        </script>
+    </body>
+</html>
